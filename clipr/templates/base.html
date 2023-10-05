@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}Clipr{% endblock %}</title>
+    <!-- Include Tailwind CSS from a CDN -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="bg-gray-100">
+    <nav class="bg-blue-500 p-4">
+      <div class="container mx-auto">
+        <div class="flex justify-between items-center">
+          <div class="text-white text-xl font-bold">Clipr</div>
+          <!-- You can add navigation links here -->
+          <ul class="flex space-x-4">
+            <li><a href="#" class="text-white">Home</a></li>
+            <li><a href="#" class="text-white">About</a></li>
+            <li><a href="#" class="text-white">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container mx-auto py-8">
+      <form
+        action=""
+        method="post"
+        class="max-w-md mx-auto bg-white p-4 rounded-lg shadow-lg"
+      >
+        {% csrf_token %}
+        <div class="mb-4">
+          <label for="url" class="block text-gray-700 font-bold mb-2"
+            >Enter URL:</label
+          >
+          <input
+            type="text"
+            name="url"
+            id="url"
+            value="{{ url }}"
+            required
+            class="w-full border rounded-lg py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+        <div class="mb-4">
+          <label for="short_url" class="block text-gray-700 font-bold mb-2"
+            >Enter Short URL Slug:</label
+          >
+          <input
+            type="text"
+            name="short_url"
+            id="short_url"
+            value="{{ short_url }}"
+            required
+            class="w-full border rounded-lg py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+        <div class="mb-4">
+          <button
+            type="button"
+            onclick="generateQR()"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Generate QR
+          </button>
+        </div>
+        <div class="mb-4">
+          <input
+            type="submit"
+            value="Submit"
+            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          />
+        </div>
+      </form>
+    </div>
+    <script>
+      function generateQR() {
+        // Add your QR code generation logic here
+        alert("QR code generated!");
+      }
+    </script>
+  </body>
+</html>
