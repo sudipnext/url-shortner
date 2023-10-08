@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from datetime import timedelta
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,11 +30,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-#auth
-AUTH_USER_MODEL = 'appclipr.User'
-
-#rest configs
-
 
 # Application definition
 
@@ -44,11 +42,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'appclipr',
     'rest_framework',
+    'djoser',
+    'corsheaders',
+    'account'
+
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -131,12 +134,62 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+#jwt settings
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'appclipr.authentication.JWTAuthentication'
-,
-    ]
+    'DEFAULT_PERMISSION_CLASSES':(
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+
 }
+#jwt settings
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('JWT',),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": True,
+    # "BLACKLIST_AFTER_ROTATION": True,
+    "UPDATE_LAST_LOGIN": False,
+
+}
+
+#cors allowed origins
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+]
+
+#auth user model
+AUTH_USER_MODEL = 'account.User'
+load_dotenv()
+#Email Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.environ.get('EMAIL_USERNAME')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+EMAIL_USE_TLS = True
+
+#Djoser settings
+DJOSER = {
+    'LOGIN_FIELD': 'email',
+    'USER_CREATE_PASSWORD_RETYPE': True,
+    'ACTIVATION_URL': '/activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': True,
+    'SEND_CONFIRMATION_EMAIL': True,
+    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
+    'PASSWORD_RESET_CONFIRM_URL': 'account/reset_password_confirm/{uid}/{token}',
+    'SET_PASSWORD_RETYPE': True,
+    'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': True,
+    'TOKEN_MODEL': None,
+    'SERIALIZERS': {
+        'user_create': 'account.serializers.UserCreateSerializer',
+        'user': 'account.serializers.UserCreateSerializer',
+        'user_delete': 'djoser.serializers.UserDeleteSerializer',
+    },
+}
+
