@@ -1,8 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from account.models import User
 
 #url model
 class URL(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     original_url = models.CharField(max_length=1000)
     short_url = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -27,18 +29,3 @@ class Click(models.Model):
 class Tag(models.Model):
     name = models.CharField(max_length=50)
     urls = models.ManyToManyField(URL, blank=True)
-
-#user model
-
-class User(AbstractUser):
-    MALE = 'Male'
-    FEMALE = 'Female'
-    GENDER_IN_CHOICES = [
-        (MALE, 'Male'),
-        (FEMALE, 'Female'),
-    ]
-    phone_number = models.CharField(max_length=20, blank=True, null=True, unique=True)
-    gender = models.CharField(max_length=6, choices=GENDER_IN_CHOICES, null=True, blank=True)
-    country = models.CharField(max_length=120, null=True, blank=True)
-    city = models.CharField(max_length=120, null=True, blank=True)
-    state = models.CharField(max_length=120, null=True, blank=True)
