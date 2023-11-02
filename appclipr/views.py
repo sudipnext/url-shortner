@@ -24,14 +24,11 @@ def get_public_ip():
         print("Error:", e)
         return None
 
-##random short URL SLUG Generator
-def random_slug():
-    characters = string.ascii_letters + string.digits
-    return ''.join(random.choice(characters) for _ in range(6))
+
 #generate qr code
 def generate_qr_code(url):
     url = pyqrcode.create(url)
-    url.png('media/qr_codes/' + url.short_url + '.png', scale=8)
+    url.png('media/qr_codes/' + url.short_slug + '.png', scale=8)
 
 class URLViewSet(viewsets.ModelViewSet):
     queryset = URL.objects.all()
@@ -54,16 +51,16 @@ class URLViewSet(viewsets.ModelViewSet):
         if url.qr_code:
             qr_code_path = url.qr_code.path
             response = FileResponse(open(qr_code_path, 'rb'), content_type='image/png')
-            response['Content-Disposition'] = f'attachment; filename="{url.short_url}.png"'
+            response['Content-Disposition'] = f'attachment; filename="{url.short_slug}.png"'
             return response
         return Response({'detail': 'QR code not available for this URL.'}, status=404)
 
 
 @api_view(['GET'])
 @permission_classes([])
-def get_long_url(request, short_url):
+def get_long_url(request, short_slug):
     if request.method == 'GET':
-        url = URL.objects.get(short_url=short_url)
+        url = URL.objects.get(short_slug=short_slug)
         url.clicks += 1
         url.save()
 

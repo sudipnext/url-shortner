@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('original_url', models.CharField(max_length=1000)),
-                ('short_url', models.CharField(max_length=20)),
+                ('short_slug', models.CharField(max_length=20)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('clicks', models.IntegerField(default=0)),
                 ('last_clicked', models.DateTimeField(auto_now=True)),
