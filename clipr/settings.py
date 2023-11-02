@@ -29,12 +29,13 @@ SECRET_KEY = 'django-insecure-o@m%a%m=h)=a3)lulnp7k^d06ne&@#5o+4t#hq$llt9dj=^)d)
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ["*"]  # new
+CSRF_TRUSTED_ORIGINS = ["http://localhost:3000", "http://localhost:8000", "https://localhost:3000"]
 CORS_ALLOW_ALL_ORIGINS = True
 #cors allowed origins
-CORS_ALLOWED_ORIGINS = [
-    "*"
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",
+#     "http://localhost:8000",
+# ]
 
 # Application definition
 
@@ -181,7 +182,7 @@ EMAIL_USE_TLS = True
 DJOSER = {
     'LOGIN_FIELD': 'email',
     'USER_CREATE_PASSWORD_RETYPE': True,
-    'ACTIVATION_URL': '/activate/{uid}/{token}',
+    'ACTIVATION_URL': 'api/activate/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
     'SEND_CONFIRMATION_EMAIL': True,
     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,

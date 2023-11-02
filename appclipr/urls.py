@@ -7,6 +7,6 @@ router.register('api/urls', URLViewSet, 'urls')
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('<str:short_url>/', get_long_url, name='get_long_url'),
+    path('s/<str:short_url>/', get_long_url, name='get_long_url'),
     path('api/urls/<str:short_url>/qr_code', URLViewSet.as_view({'get': 'qr_code'}), name='generate_qr_code'),
 ]
