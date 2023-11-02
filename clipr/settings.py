@@ -30,6 +30,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = ["*"]  # new
+CORS_ALLOW_ALL_ORIGINS = True
+#cors allowed origins
+CORS_ALLOWED_ORIGINS = [
+    "*"
+]
 
 # Application definition
 
@@ -159,10 +164,7 @@ SIMPLE_JWT = {
 
 }
 
-#cors allowed origins
-CORS_ALLOWED_ORIGINS = [
-    "*"
-]
+
 
 #auth user model
 AUTH_USER_MODEL = 'account.User'
