@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from .serializers import URLSerializer
 import random, string, pyqrcode
 from django.utils import timezone
-from .models import URL
+from .models import URL, Click
 from django.http import FileResponse
 from django.shortcuts import redirect
 
@@ -51,4 +51,15 @@ def get_long_url(request, short_url):
         url = URL.objects.get(short_url=short_url)
         url.clicks += 1
         url.save()
+
+        # Capture click details
+        click = Click(url=url, clicked_at=timezone.now(), ip_address=request.META.get('REMOTE_ADDR'))
+        click.user_agent = request.META.get('HTTP_USER_AGENT')
+        click.referrer = request.META.get('HTTP_REFERER')
+        click.country = request.META.get('GEOIP_COUNTRY_NAME', 'Unknown')  # If using a GeoIP database
+        click.city = request.META.get('GEOIP_CITY', 'Unknown')  # If using a GeoIP database
+        click.save()
+        if not (url.original_url.startswith('http://') or url.original_url.startswith('https://')):
+            url.original_url = 'http://' + url.original_url  # You can add 'https://' if preferred
+
         return redirect(url.original_url)
