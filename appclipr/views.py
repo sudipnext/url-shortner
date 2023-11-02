@@ -8,6 +8,21 @@ from django.utils import timezone
 from .models import URL, Click
 from django.http import FileResponse
 from django.shortcuts import redirect
+import urllib.request, urllib.parse, urllib.error, json, socket
+import requests
+
+def get_public_ip():
+    try:
+        response = requests.get('http://httpbin.org/ip')
+        if response.status_code == 200:
+            data = response.json()
+            public_ip = data.get('origin')
+            return public_ip
+        else:
+            return None
+    except Exception as e:
+        print("Error:", e)
+        return None
 
 ##random short URL SLUG Generator
 def random_slug():
@@ -53,11 +68,19 @@ def get_long_url(request, short_url):
         url.save()
 
         # Capture click details
-        click = Click(url=url, clicked_at=timezone.now(), ip_address=request.META.get('REMOTE_ADDR'))
+        public_ip = get_public_ip()
+        serviceurl = 'http://www.geoplugin.net/json.gp?ip='+public_ip
+
+        print('Retrieving', serviceurl)
+        uh = urllib.request.urlopen(serviceurl)
+        data = uh.read().decode()
+        print('Retrieved', len(data), 'characters')
+        js = json.loads(data)
+        click = Click(url=url, clicked_at=timezone.now(), ip_address=public_ip)
         click.user_agent = request.META.get('HTTP_USER_AGENT')
         click.referrer = request.META.get('HTTP_REFERER')
-        click.country = request.META.get('GEOIP_COUNTRY_NAME', 'Unknown')  # If using a GeoIP database
-        click.city = request.META.get('GEOIP_CITY', 'Unknown')  # If using a GeoIP database
+        click.country = js['geoplugin_countryName']
+        click.city = js['geoplugin_city']
         click.save()
         if not (url.original_url.startswith('http://') or url.original_url.startswith('https://')):
             url.original_url = 'http://' + url.original_url  # You can add 'https://' if preferred

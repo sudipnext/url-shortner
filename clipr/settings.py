@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-o@m%a%m=h)=a3)lulnp7k^d06ne&@#5o+4t#hq$llt9dj=^)d)
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
+CSRF_TRUSTED_ORIGINS = ["*"]  # new
 
 # Application definition
 
@@ -161,8 +161,7 @@ SIMPLE_JWT = {
 
 #cors allowed origins
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
+    "*"
 ]
 
 #auth user model
