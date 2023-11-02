@@ -14,6 +14,7 @@ class UserManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
+    
     def create_superuser(self, email, name, is_admin=True, password=None):
         #create and save a superuser with the given email, name and password.
         user=self.create_user(
@@ -40,7 +41,8 @@ class User(AbstractBaseUser):
 
     #to make the default username field as email
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name', 'is_admin']
+    REQUIRED_FIELDS = ['name']
+    # REQUIRED_FIELDS = ['name', 'is_admin']
 
     def __str__(self):
         return self.email
