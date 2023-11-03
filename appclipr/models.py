@@ -1,9 +1,9 @@
-from django.db import models
+from django.db import models, IntegrityError
 from account.models import User
 import qrcode
 from io import BytesIO
 from django.core.files import File
-import string, random, socket
+import string, random
 
 
 class URL(models.Model):
@@ -21,35 +21,8 @@ class URL(models.Model):
     def save(self, *args, **kwargs):
         if not self.short_slug:
             self.short_slug = self.generate_unique_slug()
-
-        # Generate a QR code for the short URL
-        qr = qrcode.QRCode(
-            version=1,
-            error_correction=qrcode.constants.ERROR_CORRECT_L,
-            box_size=10,
-            border=4,
-        )
-        #get the window location url then add the short slug and add_data
-        if 'request' in kwargs:
-            request = kwargs.pop('request')
-            current_domain = request.get_host()
-        else:
-            current_domain = "http://localhost:8000/"
-        qr.add_data(f"{current_domain}s/{self.short_slug}")
-        qr.make(fit=True)
-
-        qr_code_img = qr.make_image(fill_color="black", back_color="white")
-
-        # Save the QR code image to the qr_codes directory
-        buffer = BytesIO()
-        qr_code_img.save(buffer, format="PNG")
-
-        super(URL, self).save(*args, **kwargs)  # Save the instance to generate an ID
-
-        # Set the proper filename for the QR code image based on the instance ID
-        filename = f'qr_code_{self.short_slug}.png'
-        self.qr_code.save(filename, File(buffer), save=False)
         super(URL, self).save(*args, **kwargs)
+
 
     def generate_unique_slug(self):
         while True:
