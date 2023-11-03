@@ -16,7 +16,7 @@ def generate_qr_code(sender, instance, created, **kwargs):
             box_size=10,
             border=4,
         )
-        if current_domain:
+        if os.environ.get('DOMAIN'):
             current_domain = os.environ.get('DOMAIN')
         else:
             current_domain = "http://localhost:8000/"
