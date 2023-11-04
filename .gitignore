@@ -1,4 +1,6 @@
 env
 .env
 *.sqlite3
-media
+/media
+*.pyc
+/__pycache__
