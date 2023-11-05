@@ -1,8 +1,8 @@
 from rest_framework.decorators import api_view, action, permission_classes
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from .serializers import URLSerializer, URLCreateSerializer, URLUpdateSerializer
+from rest_framework.permissions import IsAuthenticated
+from .serializers import (URLSerializer, SimpleURLSerializer)
 from django.utils import timezone
 from .models import URL, Click
 from django.shortcuts import redirect
@@ -31,14 +31,11 @@ class URLViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         if self.request.method == 'PATCH' or self.request.method == 'PUT':
-            return URLUpdateSerializer
-        elif self.request.method == 'POST':
-            return URLCreateSerializer
-        else:
-            return URLSerializer
+            return SimpleURLSerializer
+        return URLSerializer
         
     def list(self, request, *args, **kwargs):
-        queryset = URL.objects.filter(user=request.user)
+        queryset = request.user.urls.all()
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
     
@@ -112,5 +109,4 @@ def get_long_url(request, short_slug):
         click.save()
         if not (url.original_url.startswith('http://') or url.original_url.startswith('https://')):
             url.original_url = 'http://' + url.original_url  # You can add 'https://' if preferred
-
         return redirect(url.original_url)

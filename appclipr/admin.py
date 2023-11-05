@@ -10,12 +10,12 @@ class UserAdminInline(admin.StackedInline):
 @admin.register(URL)
 class URLAdmin(admin.ModelAdmin):
     list_display = ('original_url', 'short_slug', 'user', 'clicks', 'qr_code')
-    list_filter = ('user',)
+    list_filter = ('user', 'tags')
     search_fields = ('original_url', 'short_slug', 'user__username')
 
 @admin.register(Click)
 class ClickAdmin(admin.ModelAdmin):
     list_display = ('clicked_at', 'ip_address', 'user_agent', 'referrer', 'country', 'city')
-    list_filter = ('clicked_at', 'country', 'city')
+    list_filter = ('clicked_at', 'country', 'city', 'url__short_slug')
     search_fields = ('url__original_url', 'url__short_slug', 'ip_address', 'user_agent', 'referrer', 'country', 'city')
 admin.site.register(Tag)

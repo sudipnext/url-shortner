@@ -8,12 +8,8 @@ class URLSerializer(serializers.ModelSerializer):
         model = URL
         fields = '__all__'
 
-class URLCreateSerializer(serializers.ModelSerializer):
+class SimpleURLSerializer(serializers.ModelSerializer):
     class Meta:
         model = URL
-        fields = ('id', 'original_url', 'short_slug', 'description')
+        fields = ('id', 'original_url', 'short_slug', 'description', 'tags')
 
-class URLUpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = URL
-        fields = ('id','original_url', 'short_slug', 'description')

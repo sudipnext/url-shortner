@@ -9,15 +9,15 @@ from django.core.files import File
 
 @receiver(post_save, sender=URL)
 def generate_qr_code(sender, instance, created, **kwargs):
-    if created:  
+    if (not instance.qr_code) or instance.is_original_url_changed():  
         qr = qrcode.QRCode(
             version=1,
             error_correction=qrcode.constants.ERROR_CORRECT_L,
             box_size=10,
             border=4,
         )
-        if os.environ.get('DOMAIN'):
-            current_domain = os.environ.get('DOMAIN')
+        if os.environ.get('DOMAIN_BACK'):
+            current_domain = os.environ.get('DOMAIN_BACK')
         else:
             current_domain = "http://localhost:8000/"
 
