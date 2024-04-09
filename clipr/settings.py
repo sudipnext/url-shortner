@@ -92,22 +92,22 @@ WSGI_APPLICATION = 'clipr.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': dj_database_url.config(
-        # Feel free to alter this value to suit your needs.
-        default='postgres://url_shortner_db_g079_user:qOrEz8xnAfDS7O2r0MCvwSfxH8M1DiaI@dpg-cl2gfc48s0fs7389ii9g-a.singapore-postgres.render.com/url_shortner_db_g079',
-        conn_max_age=600
-    )
-}
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         # Feel free to alter this value to suit your needs.
+#         default='postgres://url_shortner_db_g079_user:qOrEz8xnAfDS7O2r0MCvwSfxH8M1DiaI@dpg-cl2gfc48s0fs7389ii9g-a.singapore-postgres.render.com/url_shortner_db_g079',
+#         conn_max_age=600
+#     )
+# }
 
 
 # Password validation
@@ -145,7 +145,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Define the STATIC_ROOT
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # media

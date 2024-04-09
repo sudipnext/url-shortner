@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -7,78 +8,220 @@
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+      .clipr-background{
+        background: #0B101B;
+      }
+
+      .gradient-text{
+        background: -webkit-linear-gradient(to right, #ff007f, #007fff, #ff4500); 
+        background: linear-gradient(to right, #ff007f, #007fff, #ff4500); 
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+      }
+      .logo {
+        font-size: 36.9px;
+        font-weight: bolder;
+        font-family: 'Inter', sans-serif;
+      }
+      .border-radius{
+        font-family: 'Inter', sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+        border: 2px solid #353C4A;
+        padding: 10px;
+        border-radius: 48px;
+      }
+      .register-btn{
+        background: #144EE3;
+        border: none;
+      }
+      .hero-title{
+        font-size: 60px;
+        font-weight: bolder;
+        font-family: 'Inter', sans-serif;
+      }
+      .hero-assist{
+        font-family: 'Inter', sans-serif;
+        color: #C9CED6;
+        font-size: 16px;
+      }
+
+    .custom-input {
+      padding: 16px;
+      font-size: 16px;
+      color: white;
+      background-color: transparent; /* Remove inner fill */
+      transition: border-color 0.3s ease; /* Add transition effect on border color */
+  }
+  /* Add styles for when input is focused */
+  .custom-input:focus {
+      border-color: #3498db; /* Change border color when input is focused */
+  }
+  .gradient-bg {
+    background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+  }
+  
+  /* You can adjust the gradient colors and direction as needed */
+  
+  .border-radius {
+    border-radius: 8px;
+  }
+
+  
+    </style>
   </head>
 
-  <body class="bg-gray-100">
-    <nav class="bg-blue-500 p-4">
+  <body class="clipr-background">
+    <nav class="p-4">
       <div class="container mx-auto">
         <div class="flex justify-between items-center">
-          <div class="text-white text-xl font-bold">Clipr</div>
+          <div class="logo gradient-text">Clipr</div>
           <!-- You can add navigation links here -->
           <ul class="flex space-x-4">
-            <li><a href="#" class="text-white">Home</a></li>
-            <li><a href="#" class="text-white">About</a></li>
-            <li><a href="#" class="text-white">Contact</a></li>
+            <li class="flex border-radius"><a href="#" class="text-white">Login</a><img src="{% static 'img/s.png' %}"></li>
+            <li class="border-radius register-btn"><a href="#" class="text-white">Register Now</a></li>
           </ul>
         </div>
       </div>
     </nav>
-    <div class="container mx-auto py-8">
+    <div class="container mx-auto py-4">
+      <div class="yet-another-container max-w-md mx-auto my-5">
+        <h1 class="gradient-text hero-title ">Shorten Your Loooooong Links :)</h1>
+        <p class="hero-assist">Clipr is an efficient and easy-to-use URL shortening service that streamlines your online experience.</p>
+      </div>
       <form
+        id="urlShortenerForm"
         action=""
         method="post"
-        class="max-w-md mx-auto bg-white p-4 rounded-lg shadow-lg"
+        class="max-w-md mx-auto my-10"
       >
         {% csrf_token %}
         <div class="mb-4">
-          <label for="url" class="block text-gray-700 font-bold mb-2"
-            >Enter URL:</label
-          >
+        
           <input
-            type="text"
-            name="url"
-            id="url"
-            value="{{ url }}"
-            required
-            class="w-full border rounded-lg py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
+          type="text"
+          name="url"
+          id="url"
+          value="{{ url }}"
+          placeholder="Enter the link Here"
+          class="w-full border-radius py-2 focus:outline-none focus:shadow-outline custom-input"
+      />
+      
         </div>
+        
         <div class="mb-4">
-          <label for="short_slug" class="block text-gray-700 font-bold mb-2"
-            >Enter Short URL Slug:</label
-          >
           <input
-            type="text"
-            name="short_slug"
-            id="short_slug"
-            value="{{ short_slug }}"
-            required
-            class="w-full border rounded-lg py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
+          type="text"
+          name="short_slug"
+          id="short_slug"
+          value="{{ short_slug }}"
+          placeholder="Enter the short slug here"
+          class="w-full border-radius py-2 focus:outline-none focus:shadow-outline custom-input"
+      />
+      
         </div>
         <div class="mb-4">
           <button
             type="button"
             onclick="generateQR()"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            class="gradient-bg text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >
             Generate QR
           </button>
         </div>
+        
         <div class="mb-4">
           <input
             type="submit"
             value="Submit"
-            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            class="gradient-bg text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           />
         </div>
+        
       </form>
+      
+      
     </div>
     <script>
       function generateQR() {
         // Add your QR code generation logic here
         alert("QR code generated!");
       }
+      document.getElementById('urlShortenerForm').addEventListener('submit', function(event) {
+        var urlInput = document.getElementById('url');
+        var shortSlugInput = document.getElementById('short_slug');
+        var isValid = true;
+      
+        // Remove any existing error messages
+        removeError(urlInput);
+        removeError(shortSlugInput);
+      
+        // Check if URL input is empty
+        if (urlInput.value.trim() === '') {
+          isValid = false;
+          // Show error notification
+          showError(urlInput, 'Please enter a URL');
+        } else if (!isValidUrl(urlInput.value.trim())) {
+          isValid = false;
+          // Show error notification
+          showError(urlInput, 'Please enter a valid URL');
+        }
+      
+        // Check if short slug input is empty and validate length
+        if (shortSlugInput.value.trim() !== '' && shortSlugInput.value.trim().length < 6) {
+          isValid = false;
+          // Show error notification
+          showError(shortSlugInput, 'Short slug must be at least 6 characters long');
+        }
+      
+        // Prevent form submission if validation fails
+        if (!isValid) {
+          event.preventDefault();
+        }
+      });
+      
+      // Function to show error notification
+      function showError(input, errorMessage) {
+        // Remove any existing error message
+        removeError(input);
+      
+        // Create a new error message element
+        var errorElement = document.createElement('p');
+        errorElement.className = 'text-red-500 text-xs italic error-message';
+        errorElement.textContent = errorMessage;
+        // Insert error message after the input element
+        input.parentNode.insertBefore(errorElement, input.nextSibling);
+      }
+      
+      // Function to remove error message
+      function removeError(input) {
+        var errorElement = input.nextElementSibling;
+        if (errorElement && errorElement.classList.contains('error-message')) {
+          // Remove error message
+          errorElement.remove();
+        }
+      }
+      
+      // Function to validate URL format
+      function isValidUrl(url) {
+        var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+          '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+          '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+          '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+          '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+          '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+        return !!pattern.test(url);
+      }
+      
     </script>
   </body>
 </html>

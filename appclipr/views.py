@@ -9,7 +9,10 @@ from django.shortcuts import redirect
 import urllib.request, urllib.parse, urllib.error, json, socket
 import requests
 from django.shortcuts import get_object_or_404
+from django.shortcuts import render
 
+def index(request):
+    return render(request, 'base.html')
 
 def get_public_ip():
     try:
@@ -81,8 +84,6 @@ class URLViewSet(viewsets.ModelViewSet):
             return Response({'message': 'URL deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
         else:
             return Response({'error': 'You do not have permission to delete this URL'}, status=status.HTTP_403_FORBIDDEN)
-
-
 
 @api_view(['GET'])
 @permission_classes([])
