@@ -33,7 +33,7 @@ class UserManager(BaseUserManager):
 # Custom User Model
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(verbose_name='email', max_length=255, unique=True)
-    name = models.CharField(max_length=255, blank=False)
+    username = models.CharField(max_length=255, blank=False, unique=True)
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
@@ -45,7 +45,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     #to make the default username field as email
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name']
+    REQUIRED_FIELDS = ['username']
 
     def __str__(self):
         return self.email
