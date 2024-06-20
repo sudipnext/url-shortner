@@ -13,6 +13,8 @@ import {
 import { AuthActions } from "@/app/auth/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useAuth } from "@/context/AuthContext";
+
 type FormData = {
   email: string;
   password: string;
@@ -27,19 +29,24 @@ const Login = () => {
   } = useForm<FormData>();
 
   const router = useRouter();
+  const { setIsLoggedIn } = useAuth();
 
-  const { login, storeToken } = AuthActions();
+  const { login, storeToken, storeUserObject } = AuthActions();
 
   const onSubmit = (data: FormData) => {
     login(data.email, data.password)
       .json((json) => {
+        console.log(json.user)
         storeToken(json.access, "access");
         storeToken(json.refresh, "refresh");
+        setIsLoggedIn(true);
+        storeUserObject(json.user)
 
-        router.push("/dashboard");
+        router.push("/");
       })
       .catch((err) => {
         setError("root", { type: "manual", message: err.message });
+        setIsLoggedIn(false);
       });
   };
 
@@ -52,7 +59,7 @@ const Login = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)}  className="grid gap-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -78,7 +85,6 @@ const Login = () => {
             <Input
               id="password"
               type="password"
-          
               placeholder="********"
               {...register("password", { required: "Password is required" })}
             />

@@ -4,8 +4,13 @@ import Cookies from "js-cookie";
 const api = wretch("http://localhost:8000/api").accept("application/json");
 
 const storeToken = (token: string, type: "access" | "refresh") => {
-  Cookies.set(type + "Token", token, { sameSite: 'none', secure: true });
+  Cookies.set(type + "Token", token, { sameSite: 'none', secure: true});
 };
+
+const storeUserObject = (user: object)=>{
+  // Add your code here to store the user object
+  console.log(user);
+}
 
 const getToken = (type: string) => {
   return Cookies.get(type + "Token");
@@ -39,6 +44,11 @@ const handleJWTRefresh = () => {
   return api.post({ refresh: refreshToken }, "/auth/jwt/refresh");
 };
 
+const verifyJWT = () => {
+  const accessToken = getToken("access");
+  return api.post({ token: accessToken }, "/auth/jwt/verify");
+}
+
 const resetPassword = (email: string) => {
   return api.post({ email }, "/auth/users/reset_password/");
 };
@@ -58,8 +68,10 @@ const resetPasswordConfirm = (
 export const AuthActions = () => {
   return {
     login,
+    storeUserObject,
     resetPasswordConfirm,
     handleJWTRefresh,
+    verifyJWT,
     register,
     resetPassword,
     storeToken,
