@@ -21,25 +21,25 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <AuthProvider>
-        <body className={inter.className}>
-          <div className="flex-col md:flex mb-20">
-            <div className="border-b">
-              <div className="flex h-16 items-center px-4">
-                <a href="/" className="flex items-center">
-                  <SiCurl /> <span>Shorty</span>
-                </a>
-                <div className="mx-6" />
-                <NavMenu />
-                <div className="ml-auto flex items-center space-x-4">
-                  <UserNav />
+        <AuthProvider>
+          <body className={inter.className}>
+            <div className="flex-col md:flex mb-20">
+              <div className="border-b">
+                <div className="flex h-16 items-center px-4">
+                  <a href="/" className="flex items-center">
+                    <SiCurl /> <span>Shorty</span>
+                  </a>
+                  <div className="mx-6" />
+                  {/* <NavMenu /> */}
+                  <div className="ml-auto flex items-center space-x-4">
+                    <UserNav />
+                  </div>
                 </div>
               </div>
+              {children}
             </div>
-            {children}
-          </div>
-        </body>
-      </AuthProvider>
+          </body>
+        </AuthProvider>
     </html>
   );
 }

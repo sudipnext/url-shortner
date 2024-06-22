@@ -33,7 +33,7 @@ class URLViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_serializer_class(self):
-        if self.request.method == 'PATCH' or self.request.method == 'PUT':
+        if self.request.method == 'PATCH' or self.request.method == 'PUT' or self.request.method == 'POST':
             return SimpleURLSerializer
         return URLSerializer
         
@@ -59,9 +59,10 @@ class URLViewSet(viewsets.ModelViewSet):
             validated_data['user'] = request.user
             url = URL.objects.create(**validated_data)
             
-            return Response(URLSerializer(url).data, status=status.HTTP_201_CREATED)
+            return Response(self.get_serializer(url).data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
     def update(self, request, pk=None, *args, **kwargs):
         url = get_object_or_404(URL, pk=pk)
         if request.user == url.user:

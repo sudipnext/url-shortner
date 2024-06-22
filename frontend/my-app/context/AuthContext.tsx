@@ -14,6 +14,7 @@ interface AuthContextType {
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
   loading: boolean;
   isLoggedIn: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   handleLogout: () => void;
 }
 
@@ -51,7 +52,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, loading, setIsLoggedIn, handleLogout }}
+      value={{ isLoggedIn, loading, setLoading, setIsLoggedIn, handleLogout }}
     >
       {children}
     </AuthContext.Provider>

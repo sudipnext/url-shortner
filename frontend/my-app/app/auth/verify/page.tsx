@@ -1,10 +1,12 @@
+"use client";
 import React from "react";
 import { Button } from "@/components/ui/button";
+import { HomeURL } from "@/lib/utils";
 type Props = {};
 
 const Verify = (props: Props) => {
   const handleClick = () => {
-    fetch("http://127.0.0.1:8000/api/auth/users/resend_activation/", {
+    fetch(`${HomeURL()}auth/users/resend_activation/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -31,7 +33,9 @@ const Verify = (props: Props) => {
         encounter any issues, please contact the administrator at
         admin@gmail.com.
       </p>
-      <Button className="w-1/2 mt-5">Resend Link</Button>
+      <Button onClick={handleClick} className="w-1/2 mt-5">
+        Resend Link
+      </Button>
     </div>
   );
 };

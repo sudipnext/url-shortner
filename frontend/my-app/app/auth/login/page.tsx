@@ -14,6 +14,7 @@ import { AuthActions } from "@/app/auth/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/context/AuthContext";
+import { toast, Toaster } from "sonner";
 
 type FormData = {
   email: string;
@@ -26,7 +27,9 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
     setError,
-  } = useForm<FormData>();
+  } = useForm<FormData>({
+    mode: "onBlur",
+  });
 
   const router = useRouter();
   const { setIsLoggedIn } = useAuth();
@@ -36,22 +39,25 @@ const Login = () => {
   const onSubmit = (data: FormData) => {
     login(data.email, data.password)
       .json((json) => {
-        console.log(json.user)
+        console.log(json.user);
         storeToken(json.access, "access");
         storeToken(json.refresh, "refresh");
         setIsLoggedIn(true);
-        storeUserObject(json.user)
-
+        storeUserObject(json.user);
+        toast.success("Logged in successfully");
         router.push("/");
       })
       .catch((err) => {
-        setError("root", { type: "manual", message: err.message });
+        setError("root", { type: "manual", message: err.detail });
+        const errorData = JSON.parse(err.message);
+        toast.error("Failed to login: " + Object.values(errorData).join(", "));
         setIsLoggedIn(false);
       });
   };
 
   return (
-    <Card className="mx-auto max-w-sm mt-52">
+    <Card className="mx-auto max-w-sm mt-20 sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl">
+      <Toaster richColors />
       <CardHeader>
         <CardTitle className="text-2xl">Login</CardTitle>
         <CardDescription>

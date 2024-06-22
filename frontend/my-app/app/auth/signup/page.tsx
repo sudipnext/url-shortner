@@ -3,8 +3,9 @@ import Link from "next/link";
 import { useState } from "react";
 import { FormEvent, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
-
+import { toast, Toaster } from "sonner";
 import { Button } from "@/components/ui/button";
+import { HomeURL } from "@/lib/utils";
 import {
   Card,
   CardContent,
@@ -47,13 +48,14 @@ export default function SignupForm() {
     try {
       const form = event.currentTarget as HTMLFormElement;
       const formData = new FormData(form);
-      const response = await fetch("http://127.0.0.1:8000/api/auth/users/", {
+      const response = await fetch(`${HomeURL()}auth/users/`, {
         method: "POST",
         body: formData,
       });
 
       if (response.ok) {
-        router.push("/login");
+        toast.success("Account created successfully");
+        router.push("/verify");
       } else {
         const data = await response.json();
         const formErrors = {
@@ -63,6 +65,7 @@ export default function SignupForm() {
           re_password: data.re_password ? data.re_password.join(" ") : "",
         };
         setErrors(formErrors);
+        toast.error("Failed to create account: "+ Object.values(formErrors).join(" "));
       }
     } catch (error) {
       console.error("An unexpected error occurred:", error);
@@ -101,7 +104,8 @@ export default function SignupForm() {
   }
 
   return (
-    <Card className="mx-auto max-w-sm mt-40">
+    <Card className="mx-auto max-w-sm mt-20 sm:max-w-md md:max-w-lg">
+      <Toaster richColors />
       <CardHeader>
         <CardTitle className="text-xl">Sign Up</CardTitle>
         <CardDescription>
@@ -120,6 +124,7 @@ export default function SignupForm() {
               <Input
                 name="username"
                 id="username"
+                type="text"
                 placeholder="Max"
                 value={formData.username}
                 onChange={handleInputChange}
@@ -202,15 +207,12 @@ export default function SignupForm() {
                 <Button type="submit" className="w-full">
                   Create an account
                 </Button>
-                <Button variant="outline" className="w-full">
-                  Sign up with Google
-                </Button>
               </>
             )}
           </div>
           <div className="mt-4 text-center text-sm">
             Already have an account?{" "}
-            <Link href="/login" className="underline">
+            <Link href="/auth/login" className="underline">
               Login
             </Link>
           </div>

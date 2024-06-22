@@ -11,5 +11,5 @@ class URLSerializer(serializers.ModelSerializer):
 class SimpleURLSerializer(serializers.ModelSerializer):
     class Meta:
         model = URL
-        fields = ('id', 'original_url', 'short_slug', 'description', 'tags')
+        fields = ('id', 'original_url', 'short_slug', 'qr_code')
 
