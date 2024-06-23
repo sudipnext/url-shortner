@@ -16,8 +16,12 @@ import { IoSettingsSharp } from "react-icons/io5";
 import { CiUser } from "react-icons/ci";
 import { IoIosLogOut } from "react-icons/io";
 import useSWR from "swr";
-import { Loader2 } from "lucide-react";
+import { Loader2, User2Icon } from "lucide-react";
 import { fetcher } from "@/app/fetcher";
+import { 
+  useRouter
+ } from "next/navigation";
+import Link from "next/link";
 
 interface UserNavProps {
   id: Number;
@@ -26,6 +30,7 @@ interface UserNavProps {
 }
 
 export function UserNav() {
+
   const { isLoggedIn, handleLogout, setLoading, loading } = useAuth();
   const onLogoutClick = () => {
     handleLogout();
@@ -49,8 +54,7 @@ export function UserNav() {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-8 w-8 rounded-full">
               <Avatar className="h-9 w-9">
-                <AvatarImage src="/avatars/03.png" alt="@shadcn" />
-                <AvatarFallback>S</AvatarFallback>
+                <AvatarFallback>  <User2Icon /></AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>
@@ -73,12 +77,14 @@ export function UserNav() {
                   <CiUser />
                 </DropdownMenuShortcut>
               </DropdownMenuItem>
+              <Link href="/dashboard">
               <DropdownMenuItem>
-                Settings
+                Dashboard
                 <DropdownMenuShortcut>
                   <IoSettingsSharp />
                 </DropdownMenuShortcut>
               </DropdownMenuItem>
+              </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={onLogoutClick}>

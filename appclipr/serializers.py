@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import URL
+from .models import URL, Tag, Click
 from account.models import User
 
 class URLSerializer(serializers.ModelSerializer):
@@ -13,3 +13,7 @@ class SimpleURLSerializer(serializers.ModelSerializer):
         model = URL
         fields = ('id', 'original_url', 'short_slug', 'qr_code')
 
+class SimpleClickSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Click
+        fields = "__all__"
