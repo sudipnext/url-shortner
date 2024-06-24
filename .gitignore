@@ -4,3 +4,15 @@ env
 /media
 *.pyc
 /__pycache__
+
+# backend/.env
+backend/db.sqlite3
+backend/media
+backend/*.pyc
+backend/__pycache__
+backend/static/
+backend/env/
+
+frontend/node_modules/
+frontend/.next/
+
