@@ -18,9 +18,7 @@ import { IoIosLogOut } from "react-icons/io";
 import useSWR from "swr";
 import { Loader2, User2Icon } from "lucide-react";
 import { fetcher } from "@/app/fetcher";
-import { 
-  useRouter
- } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 interface UserNavProps {
@@ -30,7 +28,6 @@ interface UserNavProps {
 }
 
 export function UserNav() {
-
   const { isLoggedIn, handleLogout, setLoading, loading } = useAuth();
   const onLogoutClick = () => {
     handleLogout();
@@ -45,7 +42,11 @@ export function UserNav() {
   );
 
   if (loading) {
-    return <div className="mr-4 animate-spin"><Loader2/></div>; 
+    return (
+      <div className="mr-4 animate-spin">
+        <Loader2 />
+      </div>
+    );
   }
   return (
     <>
@@ -54,7 +55,10 @@ export function UserNav() {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-8 w-8 rounded-full">
               <Avatar className="h-9 w-9">
-                <AvatarFallback>  <User2Icon /></AvatarFallback>
+                <AvatarFallback>
+                  {" "}
+                  <User2Icon />
+                </AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>
@@ -78,12 +82,12 @@ export function UserNav() {
                 </DropdownMenuShortcut>
               </DropdownMenuItem>
               <Link href="/dashboard">
-              <DropdownMenuItem>
-                Dashboard
-                <DropdownMenuShortcut>
-                  <IoSettingsSharp />
-                </DropdownMenuShortcut>
-              </DropdownMenuItem>
+                <DropdownMenuItem>
+                  Dashboard
+                  <DropdownMenuShortcut>
+                    <IoSettingsSharp />
+                  </DropdownMenuShortcut>
+                </DropdownMenuItem>
               </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

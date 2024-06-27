@@ -1,6 +1,8 @@
 "use client";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { deleteURL } from "@/lib/utils";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -13,6 +15,7 @@ export type URLType = {
   active: "True" | "False";
   edit: React.ReactElement<any, any>;
 };
+
 export const columns: ColumnDef<URLType>[] = [
   {
     id: "select",
@@ -53,11 +56,22 @@ export const columns: ColumnDef<URLType>[] = [
     header: "QR Code",
   },
   {
-    accessorKey: "active",
+    accessorKey: "is_active",
     header: "Active",
   },
   {
-    accessorKey: "edit",
-    header: "Edit",
+    id: "actions",
+    header: "Actions",
+    cell: ({ row }) => {
+      const { id } = row.original;
+      return (
+        <div style={{ display: "flex", gap: "10px" }}>
+          <Button>Edit</Button>
+          <Button onClick={() => deleteURL(id)}>Delete</Button>
+        </div>
+      );
+    },
+    enableSorting: false,
+    enableHiding: false,
   },
 ];

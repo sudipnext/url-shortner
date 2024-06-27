@@ -1,7 +1,7 @@
 import wretch from "wretch";
 import Cookies from "js-cookie";
+import { HomeURL } from "@/lib/utils";
 
-const api = wretch("http://0.0.0.0:81/api").accept("application/json");
 
 const storeToken = (token: string, type: "access" | "refresh") => {
   Cookies.set(type + "Token", token, { sameSite: 'none', secure: false});
@@ -21,36 +21,42 @@ const removeTokens = () => {
   Cookies.remove("refreshToken");
 };
 
+// Initialize api within a function to ensure HomeURL is accessed after full module load
+const getApi = () => {
+  const url = HomeURL(); // Now calling HomeURL() within a function
+  return wretch(url).accept("application/json"); // Corrected to use the url variable
+};
+
 const register = (
   username: string,
   email: string,
   password: string,
   re_password: string
 ) => {
-  return api.post({ username, email, password, re_password }, "/auth/users/");
+  return getApi().post({ username, email, password, re_password }, "auth/users/");
 };
 
 const login = (email: string, password: string) => {
-  return api.post({ email, password }, "/auth/jwt/create");
+  return getApi().post({ email, password }, "auth/jwt/create");
 };
 
 const logout = () => {
   const refreshToken = getToken("refresh");
-  return api.post({ refresh: refreshToken }, "/auth/logout/");
+  return getApi().post({ refresh: refreshToken }, "auth/logout/");
 };
 
 const handleJWTRefresh = () => {
   const refreshToken = getToken("refresh");
-  return api.post({ refresh: refreshToken }, "/auth/jwt/refresh");
+  return getApi().post({ refresh: refreshToken }, "auth/jwt/refresh");
 };
 
 const verifyJWT = () => {
   const accessToken = getToken("access");
-  return api.post({ token: accessToken }, "/auth/jwt/verify");
+  return getApi().post({ token: accessToken }, "auth/jwt/verify");
 }
 
 const resetPassword = (email: string) => {
-  return api.post({ email }, "/auth/users/reset_password/");
+  return getApi().post({ email }, "auth/users/reset_password/");
 };
 
 const resetPasswordConfirm = (
@@ -59,12 +65,11 @@ const resetPasswordConfirm = (
   token: string,
   uid: string
 ) => {
-  return api.post(
+  return getApi().post(
     { uid, token, new_password, re_new_password },
-    "/auth/users/reset_password_confirm/"
+    "auth/users/reset_password_confirm/"
   );
 };
-
 
 export const AuthActions = () => {
   return {
