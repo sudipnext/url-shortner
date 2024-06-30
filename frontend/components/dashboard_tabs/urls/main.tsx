@@ -18,7 +18,7 @@ async function getData() {
   return await response.json();
 }
 
-export default function DemoPage() {
+export default function URLsPage() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -31,8 +31,8 @@ export default function DemoPage() {
   }, []);
 
   return (
-    <div className="container mx-auto py-10">
+    <>
       <DataTable columns={columns} data={data} />
-    </div>
+    </>
   );
 }
